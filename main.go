@@ -80,7 +80,7 @@ func GetDuration(ctx context.Context, filepath string) (seconds float64, err err
 	}
 
 	if seconds < 1 {
-		return -1, fmt.Errorf("got invalid duration of %d", seconds)
+		return -1, fmt.Errorf("got invalid duration of %v", seconds)
 	}
 
 	return seconds, nil
