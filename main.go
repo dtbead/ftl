@@ -51,6 +51,11 @@ func isFlagPassed(name string) bool {
 	return found
 }
 
+func exitErr(format string, a ...any) {
+	fmt.Fprintf(os.Stderr, format, a...)
+	os.Exit(1)
+}
+
 // MeasureBitrate calculates the needed bitrate (in kilobits) to achieve
 // a specific filesize in MBs according to a given duration (in seconds).
 func MeasureBitrate(duration float64, filesize int) float64 {
@@ -93,13 +98,11 @@ func main() {
 	flag.Parse()
 
 	if !isFlagPassed("path") {
-		fmt.Fprintf(os.Stderr, "no path given")
-		os.Exit(1)
+		exitErr("no path given")
 	}
 
 	if _, err := os.Stat(OPT_PATH); errors.Is(err, os.ErrNotExist) {
-		fmt.Fprintln(os.Stderr, "filepath does not exist")
-		os.Exit(1)
+		exitErr("filepath does not exist")
 	}
 
 	// build context in case we need to exit later
@@ -133,16 +136,14 @@ func main() {
 
 	duration, err := GetDuration(ctx, OPT_PATH)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to get duration of video, %v", err)
-		os.Exit(1)
+		exitErr("failed to get duration of video, %v", err)
 	}
 
 	if isFlagPassed("seek") {
 		if !strings.Contains(OPT_SEEK, ":") {
 			seconds, err := strconv.Atoi(OPT_SEEK)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "failed to parse seek value, %v", err)
-				os.Exit(1)
+				exitErr("failed to parse seek value, %v", err)
 			}
 
 			duration -= float64(seconds)
@@ -151,8 +152,7 @@ func main() {
 		} else {
 			var mins, secs int
 			if _, err := fmt.Sscan(OPT_SEEK, "00:%d:%d", &mins, &secs); err != nil {
-				fmt.Fprintf(os.Stderr, "failed to parse seek value. %v", err)
-				os.Exit(1)
+				exitErr("failed to parse seek value. %v", err)
 			}
 			duration -= float64(mins*60 + secs)
 
