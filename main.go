@@ -197,11 +197,9 @@ func main() {
 		if OPT_DOWNSCALE {
 			// ffmpeg expects a filter output (first [v]) and input (second [v])
 			// when being combined with multiple filters
-			// argsFilter.WriteString("[v];[v]tblend=all_mode=average")
-			argsFilter.WriteString("[v];[v]tmix=frames=120/60")
+			argsFilter.WriteString("[v];[v]tblend=all_mode=average")
 		} else {
-			// argsFilter.WriteString("[v]tblend=all_mode=average") // singular [v] input for blend
-			argsFilter.WriteString("[v]tmix=frames=120/60")
+			argsFilter.WriteString("[v]tblend=all_mode=average") // singular [v] input for blend
 		}
 		argsBase.Add("-r", "60") // set framerate to 60 fps
 	}
