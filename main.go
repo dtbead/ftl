@@ -137,6 +137,29 @@ func main() {
 		os.Exit(1)
 	}
 
+	if isFlagPassed("seek") {
+		if !strings.Contains(OPT_SEEK, ":") {
+			seconds, err := strconv.Atoi(OPT_SEEK)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "failed to parse seek value, %v", err)
+				os.Exit(1)
+			}
+
+			duration -= float64(seconds)
+
+			argsBase.Add("-ss", "00:00:"+OPT_SEEK)
+		} else {
+			var mins, secs int
+			if _, err := fmt.Sscan(OPT_SEEK, "00:%d:%d", &mins, &secs); err != nil {
+				fmt.Fprintf(os.Stderr, "failed to parse seek value. %v", err)
+				os.Exit(1)
+			}
+			duration -= float64(mins*60 + secs)
+
+			argsBase.Add("-ss", "00:"+OPT_SEEK)
+		}
+	}
+
 	avgBitrate := MeasureBitrate(duration, OPT_SIZE-(AUDIO_BITRATE/1024))
 
 	// discord allows uploading 15 MB videos, but we'll try not to hit that limit
