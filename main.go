@@ -122,13 +122,11 @@ func main() {
 
 	if OPT_FAST {
 		argsFirstPass.Add("-pass", "1")
-		argsFirstPass.Add("-cpu-used", "8")
 		argsSecondPass.Add("-pass", "2")
 		argsSecondPass.Add("-deadline", "realtime")
 		argsSecondPass.Add("-cpu-used", "4")
 	} else {
 		argsFirstPass.Add("-pass", "1")
-		argsFirstPass.Add("-cpu-used", "4")
 		argsSecondPass.Add("-pass", "2")
 		argsSecondPass.Add("-cpu-used", "2")
 	}
@@ -162,7 +160,6 @@ func main() {
 	argsSecondPass.Add("-y", "")
 
 	filepathOutput := strings.TrimSuffix(filepath.Base(OPT_PATH), filepath.Ext(filepath.Base(OPT_PATH))) + "-vp9.webm"
-	argsFirstPass.Add(filepathOutput, "")
 	argsSecondPass.Add(filepathOutput, "")
 
 	if OPT_DOWNSCALE {
