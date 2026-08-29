@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"os/signal"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -108,7 +109,8 @@ func main() {
 	}
 
 	// build context in case we need to exit later
-	ctx := context.Background()
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
+	defer stop()
 
 	// init arguments that will always be needed
 	argsBase := ArgBuilder{
