@@ -7,8 +7,18 @@
  windows: `winget install Gyan.FFmpeg`<br>
  debian: `apt install ffmpeg`
 
+## building
+have [golang](https://go.dev/doc/install) installed and run the following in terminal<br>
+```
+git clone https://github.com/dtbead/ftl
+cd ftl
+go build
+```
+
 ## usage
 ```
+  -60
+        limit the fps to 60. implicitly implied by the -smooth flag
   -debug
         print debug information during execution
   -downscale
