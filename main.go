@@ -36,6 +36,7 @@ var (
 	OPT_SEEK      = ""
 	OPT_SIZE      = 10
 	OPT_SMOOTH    = false
+	OPT_60        = false
 	OPT_FAST      = false
 	OPT_DOWNSCALE = false
 	OPT_DEBUG     = false
@@ -90,6 +91,7 @@ func main() {
 	// init cmd flags
 	flag.StringVar(&OPT_PATH, "path", "", "filepath to video")
 	flag.BoolVar(&OPT_SMOOTH, "smooth", false, "blend the framerate of 120 fps into 60. can impact encoding speed")
+	flag.BoolVar(&OPT_60, "60", false, "limit the fps to 60. implicitly implied by the -smooth flag")
 	flag.BoolVar(&OPT_FAST, "fast", false, "increase speed of encoding at cost of potential quality loss")
 	flag.BoolVar(&OPT_DOWNSCALE, "downscale", false, "downscale resolution if greater than 720p")
 	flag.BoolVar(&OPT_DEBUG, "debug", false, "print debug information during execution")
@@ -204,6 +206,10 @@ func main() {
 			argsFilter.WriteString("[v]tblend=all_mode=average") // singular [v] input for blend
 		}
 		argsBase.Add("-r", "60") // set framerate to 60 fps
+	}
+
+	if OPT_60 && !OPT_SMOOTH {
+		argsBase.Add("-fpsmax", "60") // limit framerate to 60 fps
 	}
 
 	if argsFilter.Len() > 0 {
