@@ -183,6 +183,8 @@ func main() {
 	argsSecondPass.Add("-y", "")
 
 	filepathOutput := strings.TrimSuffix(filepath.Base(OPT_PATH), filepath.Ext(filepath.Base(OPT_PATH))) + "-vp9.webm"
+
+	argsFirstPass.Add(filepathOutput, "")
 	argsSecondPass.Add(filepathOutput, "")
 
 	if OPT_DOWNSCALE {
