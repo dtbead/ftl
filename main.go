@@ -151,7 +151,7 @@ func main() {
 			argsBase.Add("-ss", "00:00:"+OPT_SEEK)
 		} else {
 			var mins, secs int
-			if _, err := fmt.Sscan(OPT_SEEK, "00:%d:%d", &mins, &secs); err != nil {
+			if _, err := fmt.Sscanf(OPT_SEEK, "%d:%d", &mins, &secs); err != nil {
 				exitErr("failed to parse seek value. %v", err)
 			}
 			duration -= float64(mins*60 + secs)
